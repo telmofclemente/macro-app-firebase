@@ -1,11 +1,11 @@
 // Configuração Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyDRs9kbVFZSb77ybEA_eNAhsJQ8bxFFnz8",
-    authDomain: "nutricao-app-33f3a.firebaseapp.com",
-    projectId: "nutricao-app-33f3a",
-    storageBucket: "nutricao-app-33f3a.appspot.com",
-    messagingSenderId: "392228060096",
-    appId: "1:392228060096:web:509a69b2e7b99d5eb2e625"
+    apiKey: "AIzaSyALI2jHYOm-QZyTPH7Nf8yt0aH6mUiSbOs",
+	authDomain: "macro-app-ed49c.firebaseapp.com",
+	projectId: "macro-app-ed49c",
+	storageBucket: "macro-app-ed49c.firebasestorage.app",
+	messagingSenderId: "550062623928",
+	appId: "1:550062623928:web:a80c1416c1379c6851384d"
 };
 
 firebase.initializeApp(firebaseConfig);
