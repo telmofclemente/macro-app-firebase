@@ -1,0 +1,165 @@
+<<<<<<< HEAD
+/* style.css - minimalista, modo claro e escuro */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    color: #111;
+}
+
+/* container central */
+.container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #005ed6;
+}
+
+.link {
+    color: #0077ff;
+    cursor: pointer;
+}
+
+p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* modo escuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #f2f2f2;
+}
+
+body.dark-mode .container {
+    background-color: #1e1e1e;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.5);
+}
+
+body.dark-mode input {
+    background-color: #2c2c2c;
+    border: 1px solid #555;
+    color: #f2f2f2;
+}
+
+body.dark-mode button {
+    background-color: #3399ff;
+}
+body.dark-mode button:hover {
+    background-color: #1a75d1;
+}
+=======
+/* style.css - minimalista, modo claro e escuro */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    color: #111;
+}
+
+/* container central */
+.container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #005ed6;
+}
+
+.link {
+    color: #0077ff;
+    cursor: pointer;
+}
+
+p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* modo escuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #f2f2f2;
+}
+
+body.dark-mode .container {
+    background-color: #1e1e1e;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.5);
+}
+
+body.dark-mode input {
+    background-color: #2c2c2c;
+    border: 1px solid #555;
+    color: #f2f2f2;
+}
+
+body.dark-mode button {
+    background-color: #3399ff;
+}
+body.dark-mode button:hover {
+    background-color: #1a75d1;
+}
+>>>>>>> ff7a0e188d85ad509aa9fb1551d5fcc6e08f9722
