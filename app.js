@@ -67,31 +67,49 @@ document.getElementById("import-recipe-btn").addEventListener("click", () => {
 
   const file = fileInput.files[0];
   const reader = new FileReader();
+
   reader.onload = function(e){
     const text = e.target.result;
     parseAndSaveRecipe(text, recipeType);
   };
+
+  reader.onerror = function(e){
+    alert("Erro a ler o ficheiro");
+  };
+
   reader.readAsText(file);
 });
 
-// Parse do ficheiro
+// Parse do ficheiro atualizado
 function parseAndSaveRecipe(text, recipeType){
   const lines = text.split("\n").map(l => l.trim()).filter(l => l.length>0);
-  let name = "", macros = {}, ingredients = [], steps = [];
-  let modeSection = false, ingSection = false;
+
+  let name = "";
+  let macros = {};
+  let ingredients = [];
+  let steps = [];
+  let modeSection = false;
+  let ingSection = false;
 
   lines.forEach(line=>{
-    if(line.startsWith("Nome:")) name = line.replace("Nome:","").trim();
-    else if(line.startsWith("Macros:")){
+    if(line.startsWith("Nome:")) {
+      name = line.replace("Nome:","").trim();
+    } else if(line.startsWith("Macros:")){
       line.replace("Macros:","").trim().split(" ").forEach(pair=>{
         const [key,value] = pair.split("=");
         if(key && value) macros[key] = Number(value);
       });
+    } else if(line.startsWith("Ingredientes:")) {
+      ingSection = true;
+    } else if(line.startsWith("Modo de preparo:")) {
+      ingSection = false;
+      modeSection = true;
+    } else if(ingSection) {
+      // Guardar a linha completa como ingrediente
+      ingredients.push(line);
+    } else if(modeSection) {
+      steps.push(line);
     }
-    else if(line.startsWith("Ingredientes:")) ingSection = true;
-    else if(line.startsWith("Modo de preparo:")) { ingSection=false; modeSection=true; }
-    else if(ingSection) ingredients.push(line);
-    else if(modeSection) steps.push(line);
   });
 
   if(!name) return alert("Ficheiro inválido: Nome não encontrado");
@@ -108,7 +126,9 @@ function parseAndSaveRecipe(text, recipeType){
   }).then(()=>{
     alert("Receita importada com sucesso!");
     loadRecipes();
-  }).catch(err=>alert(err.message));
+  }).catch(err=>{
+    alert("Erro ao gravar receita: "+err.message);
+  });
 }
 
 // Carregar receitas (ordenadas alfabeticamente)
