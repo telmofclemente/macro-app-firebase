@@ -4,27 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Macro Planner</title>
+<link rel="stylesheet" href="style.css">
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
 </head>
 <body>
 
 <h1>Macro Planner</h1>
 
-<div id="login-form">
-  <input type="email" id="login-email" placeholder="Email">
-  <input type="password" id="login-password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p>Não tens conta? <button onclick="showRegister()">Regista-te</button></p>
+<div id="login-register-container">
+  <div id="login-form">
+    <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <p>Não tens conta? <button id="show-register-btn">Regista-te</button></p>
+  </div>
+
+  <div id="register-form" style="display:none;">
+    <input type="email" id="reg-email" placeholder="Email">
+    <input type="password" id="reg-password" placeholder="Password">
+    <button id="register-btn">Registar</button>
+    <p>Já tens conta? <button id="show-login-btn">Login</button></p>
+  </div>
 </div>
 
-<div id="register-form" style="display:none;">
-  <input type="email" id="reg-email" placeholder="Email">
-  <input type="password" id="reg-password" placeholder="Password">
-  <button onclick="register()">Registar</button>
-  <p>Já tens conta? <button onclick="showLogin()">Login</button></p>
+<!-- Dashboard -->
+<div id="dashboard" style="display:none;">
+  <h2>Bem-vindo à tua app de macros!</h2>
+  <p>Aqui vais ver o teu plano semanal e receitas.</p>
+  <button id="logout-btn">Logout</button>
 </div>
 
 <script src="app.js"></script>
