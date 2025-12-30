@@ -61,19 +61,21 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 // Importar receita
 document.getElementById("import-recipe-btn").addEventListener("click", () => {
   const fileInput = document.getElementById("recipe-file");
+  const recipeType = document.getElementById("recipe-type").value;
+
   if(fileInput.files.length === 0) return alert("Escolhe um ficheiro .txt");
 
   const file = fileInput.files[0];
   const reader = new FileReader();
   reader.onload = function(e){
     const text = e.target.result;
-    parseAndSaveRecipe(text);
+    parseAndSaveRecipe(text, recipeType);
   };
   reader.readAsText(file);
 });
 
 // Parse do ficheiro
-function parseAndSaveRecipe(text){
+function parseAndSaveRecipe(text, recipeType){
   const lines = text.split("\n").map(l => l.trim()).filter(l => l.length>0);
   let name = "", macros = {}, ingredients = [], steps = [];
   let modeSection = false, ingSection = false;
@@ -83,7 +85,7 @@ function parseAndSaveRecipe(text){
     else if(line.startsWith("Macros:")){
       line.replace("Macros:","").trim().split(" ").forEach(pair=>{
         const [key,value] = pair.split("=");
-        macros[key] = Number(value);
+        if(key && value) macros[key] = Number(value);
       });
     }
     else if(line.startsWith("Ingredientes:")) ingSection = true;
@@ -93,9 +95,16 @@ function parseAndSaveRecipe(text){
   });
 
   if(!name) return alert("Ficheiro inválido: Nome não encontrado");
+  if(!macros.P || !macros.C || !macros.G || !macros.K) return alert("Macros incompletos no ficheiro");
+
   const uid = auth.currentUser.uid;
   db.collection("users").doc(uid).collection("recipes").add({
-    name, macros, ingredients, steps, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    name,
+    type: recipeType,
+    macros,
+    ingredients,
+    steps,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   }).then(()=>{
     alert("Receita importada com sucesso!");
     loadRecipes();
@@ -115,7 +124,7 @@ function loadRecipes(){
       snapshot.forEach(doc=>{
         const data = doc.data();
         const li = document.createElement("li");
-        li.textContent = data.name + ` — ${data.macros.P}P / ${data.macros.C}C / ${data.macros.G}G / ${data.macros.K}K`;
+        li.textContent = `[${data.type}] ${data.name} — ${data.macros.P}P / ${data.macros.C}C / ${data.macros.G}G / ${data.macros.K}K`;
 
         const viewBtn = document.createElement("button");
         viewBtn.textContent="Ver";
