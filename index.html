@@ -34,29 +34,22 @@
   <h2>Bem-vindo à tua app de macros!</h2>
   <button id="logout-btn">Logout</button>
 
-  <h3>Adicionar Receita</h3>
-  <input type="text" id="recipe-name" placeholder="Nome da receita">
-  <select id="recipe-type">
-    <option value="pequeno-almoço">Pequeno-almoço</option>
-    <option value="lanche">Lanche</option>
-    <option value="almoço">Almoço</option>
-    <option value="jantar">Jantar</option>
-  </select>
-  <textarea id="recipe-ingredients" placeholder="Ingrediente, proteína, carbo, gordura, kcal, quantidade (uma linha por ingrediente)"></textarea>
-  <button id="save-recipe-btn">Guardar Receita</button>
+  <h3>Importar Receita (.txt)</h3>
+  <input type="file" id="recipe-file" accept=".txt">
+  <button id="import-recipe-btn">Importar Receita</button>
 
   <h3>Receitas Guardadas</h3>
   <ul id="recipes-ul"></ul>
 
-  <h3>Calcular Macros por Refeição</h3>
-  <select id="meal-select">
-    <option value="pequeno-almoço">Pequeno-almoço</option>
-    <option value="lanche">Lanche</option>
-    <option value="almoço">Almoço</option>
-    <option value="jantar">Jantar</option>
-  </select>
-  <button id="calc-macros-btn">Calcular Macros</button>
-  <p id="macros-result"></p>
+  <div id="recipe-detail" style="display:none; border:1px solid #ccc; padding:10px; margin-top:10px;">
+    <h4 id="detail-name"></h4>
+    <p id="detail-macros"></p>
+    <p><strong>Ingredientes:</strong></p>
+    <ul id="detail-ingredients"></ul>
+    <p><strong>Modo de preparo:</strong></p>
+    <ol id="detail-steps"></ol>
+    <button id="close-detail-btn">Fechar</button>
+  </div>
 </div>
 
 <script src="app.js"></script>

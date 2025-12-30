@@ -58,66 +58,117 @@ document.getElementById("logout-btn").addEventListener("click", () => {
   });
 });
 
-// Adicionar receita
-document.getElementById("save-recipe-btn").addEventListener("click", () => {
-  const name = document.getElementById("recipe-name").value;
-  const type = document.getElementById("recipe-type").value;
-  const ingredientsText = document.getElementById("recipe-ingredients").value.trim();
+// Importar receita
+document.getElementById("import-recipe-btn").addEventListener("click", () => {
+  const fileInput = document.getElementById("recipe-file");
+  if(fileInput.files.length === 0) return alert("Escolhe um ficheiro .txt");
 
-  if(!name || !ingredientsText) return alert("Preenche todos os campos!");
-
-  const ingredients = ingredientsText.split("\n").map(line => {
-    const [name, protein, carbs, fat, kcal, quantity] = line.split(",").map(s => s.trim());
-    return {name, protein: Number(protein), carbs: Number(carbs), fat: Number(fat), kcal: Number(kcal), quantity: Number(quantity)};
-  });
-
-  const uid = auth.currentUser.uid;
-  db.collection("users").doc(uid).collection("recipes").add({name, type, ingredients})
-    .then(() => {
-      alert("Receita guardada!");
-      loadRecipes();
-    })
-    .catch(err => alert(err.message));
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const text = e.target.result;
+    parseAndSaveRecipe(text);
+  };
+  reader.readAsText(file);
 });
 
-// Carregar receitas
-function loadRecipes() {
+// Parse do ficheiro
+function parseAndSaveRecipe(text){
+  const lines = text.split("\n").map(l => l.trim()).filter(l => l.length>0);
+  let name = "", macros = {}, ingredients = [], steps = [];
+  let modeSection = false, ingSection = false;
+
+  lines.forEach(line=>{
+    if(line.startsWith("Nome:")) name = line.replace("Nome:","").trim();
+    else if(line.startsWith("Macros:")){
+      line.replace("Macros:","").trim().split(" ").forEach(pair=>{
+        const [key,value] = pair.split("=");
+        macros[key] = Number(value);
+      });
+    }
+    else if(line.startsWith("Ingredientes:")) ingSection = true;
+    else if(line.startsWith("Modo de preparo:")) { ingSection=false; modeSection=true; }
+    else if(ingSection) ingredients.push(line);
+    else if(modeSection) steps.push(line);
+  });
+
+  if(!name) return alert("Ficheiro inválido: Nome não encontrado");
+  const uid = auth.currentUser.uid;
+  db.collection("users").doc(uid).collection("recipes").add({
+    name, macros, ingredients, steps, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(()=>{
+    alert("Receita importada com sucesso!");
+    loadRecipes();
+  }).catch(err=>alert(err.message));
+}
+
+// Carregar receitas (ordenadas alfabeticamente)
+function loadRecipes(){
   const uid = auth.currentUser.uid;
   const ul = document.getElementById("recipes-ul");
-  ul.innerHTML = "";
+  ul.innerHTML="";
 
-  db.collection("users").doc(uid).collection("recipes").get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
+  db.collection("users").doc(uid).collection("recipes")
+    .orderBy("name","asc")
+    .get()
+    .then(snapshot=>{
+      snapshot.forEach(doc=>{
         const data = doc.data();
         const li = document.createElement("li");
-        li.textContent = `${data.name} (${data.type})`;
+        li.textContent = data.name + ` — ${data.macros.P}P / ${data.macros.C}C / ${data.macros.G}G / ${data.macros.K}K`;
+
+        const viewBtn = document.createElement("button");
+        viewBtn.textContent="Ver";
+        viewBtn.addEventListener("click", ()=>showRecipeDetail(data));
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent="Eliminar";
+        delBtn.addEventListener("click", ()=>deleteRecipe(doc.id));
+
+        li.appendChild(viewBtn);
+        li.appendChild(delBtn);
         ul.appendChild(li);
       });
     });
 }
 
-// Calcular macros
-document.getElementById("calc-macros-btn").addEventListener("click", () => {
-  const type = document.getElementById("meal-select").value;
-  const uid = auth.currentUser.uid;
-  let totalProtein = 0, totalCarbs = 0, totalFat = 0, totalKcal = 0;
+// Mostrar detalhe
+function showRecipeDetail(data){
+  document.getElementById("recipe-detail").style.display="block";
+  document.getElementById("detail-name").textContent = data.name;
+  document.getElementById("detail-macros").textContent = `${data.macros.P}P / ${data.macros.C}C / ${data.macros.G}G / ${data.macros.K}K`;
 
-  db.collection("users").doc(uid).collection("recipes").where("type","==",type).get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        const r = doc.data();
-        r.ingredients.forEach(i => {
-          totalProtein += i.protein * i.quantity;
-          totalCarbs += i.carbs * i.quantity;
-          totalFat += i.fat * i.quantity;
-          totalKcal += i.kcal * i.quantity;
-        });
-      });
-      document.getElementById("macros-result").textContent =
-        `${type} - Proteína: ${totalProtein}g, Carbs: ${totalCarbs}g, Gordura: ${totalFat}g, Kcal: ${totalKcal}`;
-    });
+  const ingUl = document.getElementById("detail-ingredients");
+  ingUl.innerHTML="";
+  data.ingredients.forEach(i=>{
+    const li=document.createElement("li");
+    li.textContent=i;
+    ingUl.appendChild(li);
+  });
+
+  const stepsOl = document.getElementById("detail-steps");
+  stepsOl.innerHTML="";
+  data.steps.forEach(s=>{
+    const li=document.createElement("li");
+    li.textContent=s;
+    stepsOl.appendChild(li);
+  });
+}
+
+// Fechar detalhe
+document.getElementById("close-detail-btn").addEventListener("click", ()=>{
+  document.getElementById("recipe-detail").style.display="none";
 });
+
+// Eliminar receita
+function deleteRecipe(id){
+  const uid = auth.currentUser.uid;
+  if(confirm("Desejas eliminar esta receita?")){
+    db.collection("users").doc(uid).collection("recipes").doc(id).delete()
+      .then(()=>loadRecipes())
+      .catch(err=>alert(err.message));
+  }
+}
 
 // Persistência de sessão
 auth.onAuthStateChanged(user => {
