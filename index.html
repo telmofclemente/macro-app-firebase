@@ -1,91 +1,32 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Macro Planner - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macro Planner</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
 </head>
 <body>
 
-<div class="container login-container">
-    <h1>Macro Planner</h1>
+<h1>Macro Planner</h1>
 
-    <!-- FORMULÁRIO LOGIN -->
-    <div id="login-form">
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
-        <button type="button" onclick="login()">Login</button>
-        <p>Não tens conta? <span id="show-register" class="link">Regista-te</span></p>
-    </div>
-
-    <!-- FORMULÁRIO REGISTO -->
-    <div id="register-form" style="display:none;">
-        <input type="email" id="reg-email" placeholder="Email">
-        <input type="password" id="reg-password" placeholder="Password">
-        <button type="button" onclick="register()">Registar</button>
-        <p>Já tens conta? <span id="show-login" class="link">Login</span></p>
-    </div>
+<div id="login-form">
+  <input type="email" id="login-email" placeholder="Email">
+  <input type="password" id="login-password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p>Não tens conta? <button onclick="showRegister()">Regista-te</button></p>
 </div>
 
-<!-- JAVASCRIPT no final do body -->
-<script src="app.js"></script>
-<script>
-    // Garante que os spans chamam as funções corretamente
-    document.getElementById("show-register").addEventListener("click", showRegister);
-    document.getElementById("show-login").addEventListener("click", showLogin);
-</script>
-
-</body>
-</html>
-=======
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Macro Planner - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-</head>
-<body>
-
-<div class="container login-container">
-    <h1>Macro Planner</h1>
-
-    <!-- FORMULÁRIO LOGIN -->
-    <div id="login-form">
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
-        <button type="button" onclick="login()">Login</button>
-        <p>Não tens conta? <span id="show-register" class="link">Regista-te</span></p>
-    </div>
-
-    <!-- FORMULÁRIO REGISTO -->
-    <div id="register-form" style="display:none;">
-        <input type="email" id="reg-email" placeholder="Email">
-        <input type="password" id="reg-password" placeholder="Password">
-        <button type="button" onclick="register()">Registar</button>
-        <p>Já tens conta? <span id="show-login" class="link">Login</span></p>
-    </div>
+<div id="register-form" style="display:none;">
+  <input type="email" id="reg-email" placeholder="Email">
+  <input type="password" id="reg-password" placeholder="Password">
+  <button onclick="register()">Registar</button>
+  <p>Já tens conta? <button onclick="showLogin()">Login</button></p>
 </div>
 
-<!-- JAVASCRIPT no final do body -->
 <script src="app.js"></script>
-<script>
-    // Garante que os spans chamam as funções corretamente
-    document.getElementById("show-register").addEventListener("click", showRegister);
-    document.getElementById("show-login").addEventListener("click", showLogin);
-</script>
-
 </body>
 </html>
->>>>>>> ff7a0e188d85ad509aa9fb1551d5fcc6e08f9722
