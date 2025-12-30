@@ -1,22 +1,7 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 50px;
-}
-
-input {
-  margin: 5px;
-  padding: 5px;
-}
-
-button {
-  margin: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-#dashboard {
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin-top: 20px;
-}
+body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+input, select, textarea { margin: 5px; padding: 5px; width: 250px; }
+button { margin: 5px; padding: 5px 10px; cursor: pointer; }
+#dashboard { border: 1px solid #ccc; padding: 20px; margin-top: 20px; }
+textarea { height: 80px; }
+ul { list-style: none; padding: 0; }
+li { margin: 3px 0; }
